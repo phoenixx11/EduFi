@@ -1,9 +1,14 @@
-// src/pages/Dashboard.tsx
+// src/app/dashboard/page.tsx
+'use client'
+
 import React from 'react';
-import ServiceCard from '../components/ServiceCard';
-import TransactionHistory from '../components/TransactionHistory';
+import ServiceCard from '../../components/ServiceCard';
+import TransactionHistory from '../../components/TransactionHistory';
+import useOnchain from '../../hooks/useOnchain';
 
 const Dashboard: React.FC = () => {
+  useOnchain(); // Initialize OnchainKit
+
   const services = [
     {
       title: 'Healthcare Aid',
@@ -59,3 +64,4 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
+
