@@ -1,53 +1,61 @@
-/* walletConnectButton.module.css */
+/* src/styles/WalletConnectButton.module.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.connectContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .button {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    border: none;
-    border-radius: 0.375rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  /* Connected Button */
-  .disconnectButton {
-    background-color: #ef4444; /* Red */
-    color: white;
-  }
-  
-  .disconnectButton:hover {
-    background-color: #dc2626; /* Darker Red */
-  }
-  
-  /* Connect Buttons */
-  .connectButton {
-    background-color: #3b82f6; /* Blue */
-    color: white;
-    margin-right: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .connectButton:hover {
-    background-color: #2563eb; /* Darker Blue */
-  }
-  
-  .connectButton:disabled {
-    background-color: #d1d5db; /* Gray when disabled */
-    cursor: not-allowed;
-  }
-  
-  /* Status Text */
-  .statusText {
-    margin-top: 0.5rem;
-    font-size: 0.875rem;
-    color: #6b7280; /* Gray text */
-  }
-  
-  /* Error Message */
-  .errorMessage {
-    color: #f87171; /* Red for errors */
-    font-size: 0.875rem;
-    margin-top: 0.5rem;
-  }
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: 0.25rem 0;
+}
+
+.connectButton {
+  background-color: #3b82f6; /* Blue */
+  color: white;
+}
+
+.connectButton:hover {
+  background-color: #2563eb; /* Darker Blue */
+}
+
+.disconnectButton {
+  background-color: #ef4444; /* Red */
+  color: white;
+}
+
+.disconnectButton:hover {
+  background-color: #dc2626; /* Darker Red */
+}
+
+.button:disabled {
+  background-color: #d1d5db; /* Gray */
+  cursor: not-allowed;
+}
+
+.statusText {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280; /* Gray */
+}
+
+.errorMessage {
+  color: #f87171; /* Red */
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
   

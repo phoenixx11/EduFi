@@ -1,30 +1,29 @@
 // src/components/Header.tsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import WalletConnectButton from './WalletConnectButton';
-import styles from './Header.module.css';
 
 const Header: React.FC = () => {
   return (
     <header className="bg-blue-600 text-white py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center px-4">
-        <Link to="/" className={styles.logo}>
+        <Link href="/" className="text-xl font-bold">
           CommunityWallet
         </Link>
         <nav>
           <ul className="flex space-x-4">
             <li>
-              <Link to="/learn" className={styles.navLink}>
+              <Link href="/learn" className="hover:underline">
                 Learn
               </Link>
             </li>
             <li>
-              <Link to="/register" className={styles.navLink}>
+              <Link href="/register" className="hover:underline">
                 Register
               </Link>
             </li>
             <li>
-              <Link to="/login" className={styles.navLink}>
+              <Link href="/login" className="hover:underline">
                 Login
               </Link>
             </li>
@@ -37,3 +36,4 @@ const Header: React.FC = () => {
 };
 
 export default Header;
+
