@@ -19,7 +19,7 @@ const LandingPage: React.FC = () => {
         <div className="container mx-auto text-center px-4">
           <h1 className="text-4xl font-bold mb-4">Empowering Communities through Blockchain</h1>
           <p className="text-lg mb-8">
-            Access healthcare aid, education scholarships, and banking services seamlessly.
+          Blockchain with DeFi — From Basics to Expertise.Free courses in Hindi and English .
           </p>
           <div className="flex justify-center space-x-4">
             <Link href="/learn" className="bg-green-500 text-white px-6 py-3 rounded-md hover:bg-green-600">

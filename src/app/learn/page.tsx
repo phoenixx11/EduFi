@@ -1,297 +1,192 @@
-// src/app/learn/page.tsx
-'use client'; // Ensure this is a Client Component
+'use client';
 
-import React, { useState } from 'react';
-import Image from 'next/image';
+import React from 'react';
 import Link from 'next/link';
-import { FaBook, FaVideo, FaChartBar, FaPlus, FaMinus } from 'react-icons/fa';
+import { useSendTransaction } from 'wagmi';
+import { parseEther } from 'ethers'; 
 
-interface Tutorial {
-  title: string;
-  description: string;
-  image: string; // Path to image (e.g., '/images/tutorial1.jpg')
-}
+const Courses: React.FC = () => {
+  const recipientAddress = '0xYourRecipientAddressHere'; // Replace with your wallet address
 
-interface Video {
-  title: string;
-  description: string;
-  videoUrl: string; // Embed URL (e.g., YouTube)
-  thumbnail: string; // Path to thumbnail image
-}
-
-interface Infographic {
-  title: string;
-  description: string;
-  image: string; // Path to infographic image
-}
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-const LearnPage: React.FC = () => {
-  // State for FAQ toggle
-  const [activeFAQ, setActiveFAQ] = useState<number | null>(null);
-
-  // Toggle FAQ visibility
-  const toggleFAQ = (index: number) => {
-    if (activeFAQ === index) {
-      setActiveFAQ(null);
-    } else {
-      setActiveFAQ(index);
-    }
-  };
-
-  // Sample Data for Tutorials
-  const tutorials: Tutorial[] = [
+  const courseCategories = [
     {
-      title: 'Getting Started with Blockchain',
-      description:
-        'Learn the fundamentals of blockchain technology, including how it works and its various applications.',
-      image: '/images/tutorial1.jpg',
+      title: 'Seedling',
+      description: 'Ideal for those with no prior blockchain knowledge.',
+      color: 'bg-blue-50',
+      levels: [
+        {
+          name: 'Beginner',
+          whoCanWatch: 'Newcomers',
+          cost: 'Free',
+          content: 'Introduction to blockchain technology, wallets, and basic concepts.',
+          isFree: true,
+          link: '/courses/blockchain-basics/beginner',
+        },
+        {
+          name: 'Intermediate',
+          whoCanWatch: 'Basic understanding',
+          cost: 'Free',
+          content: 'Smart contracts, decentralized applications (DApps).',
+          isFree: false,
+          paymentAmount: 'Free', 
+        },
+        {
+          name: 'Advanced',
+          whoCanWatch: 'Experienced',
+          cost: 'Free',
+          content: 'Advanced DeFi protocols and blockchain development.',
+          isFree: false,
+          paymentAmount: 'Free', 
+        },
+      ],
     },
     {
-      title: 'Smart Contracts 101',
-      description:
-        'Understand what smart contracts are, how they function, and their role in decentralized applications.',
-      image: '/images/tutorial2.jpg',
-    },
-    // Add more tutorials as needed
-  ];
-
-  // Sample Data for Videos
-  const videos: Video[] = [
-    {
-      title: 'Introduction to Web3',
-      description:
-        'A comprehensive introduction to Web3, exploring its principles and how it differs from traditional web paradigms.',
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', // Replace with actual video URLs
-      thumbnail: '/images/video1.jpg',
-    },
-    {
-      title: 'Building Decentralized Applications',
-      description:
-        'Learn how to build decentralized applications (dApps) using popular blockchain platforms and tools.',
-      videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-      thumbnail: '/images/video2.jpg',
-    },
-    // Add more videos as needed
-  ];
-
-  // Sample Data for Infographics
-  const infographics: Infographic[] = [
-    {
-      title: 'Blockchain Benefits',
-      description:
-        'Visual breakdown of how blockchain technology benefits various industries and communities.',
-      image: '/images/infographic1.jpg',
+      title: 'Explorer',
+      description: 'For those who want to dive into the world of DeFi.',
+      color: 'bg-green-50',
+      levels: [
+        {
+          name: 'Beginner',
+          whoCanWatch: 'New to DeFi',
+          cost: 'Free',
+          content: 'Introduction to decentralized finance and its importance.',
+          isFree: true,
+          link: '/courses/decentralized-finance/beginner',
+        },
+        {
+          name: 'Intermediate',
+          whoCanWatch: 'Basic DeFi understanding',
+          cost: '0.001Eth',
+          content: 'Understanding liquidity pools, staking, and yield farming.',
+          isFree: false,
+          paymentAmount: '0.001', // ETH equivalent for $15
+        },
+        {
+          name: 'Advanced',
+          whoCanWatch: 'DeFi Enthusiast',
+          cost: '0.001Eth',
+          content: 'Advanced DeFi strategies and protocol interactions.',
+          isFree: false,
+          paymentAmount: '0.001', // ETH equivalent for $30
+        },
+      ],
     },
     {
-      title: 'Decentralized Finance (DeFi)',
-      description:
-        'An infographic explaining the fundamentals of DeFi and its impact on traditional financial systems.',
-      image: '/images/infographic2.jpg',
+      title: 'Pioneer',
+      description: 'Perfect for aspiring blockchain developers.',
+      color: 'bg-yellow-50',
+      levels: [
+        {
+          name: 'Beginner',
+          whoCanWatch: 'Coding beginners',
+          cost: '-',
+          content: 'Basic Solidity and Ethereum concepts.',
+          isFree: true,
+          link: '/courses/smart-contracts/beginner',
+        },
+        {
+          name: 'Intermediate',
+          whoCanWatch: 'Some coding experience',
+          cost: '-',
+          content: 'Smart contract architecture and development with Github.',
+          isFree: false,
+          paymentAmount: 'coming soon', // ETH equivalent for $20
+        },
+        {
+          name: 'Advanced',
+          whoCanWatch: 'Experienced developers',
+          cost: '-',
+          content: 'Advanced smart contract security and best practices.',
+          isFree: false,
+          paymentAmount: 'coming soon', // ETH equivalent for $40
+        },
+      ],
     },
-    // Add more infographics as needed
-  ];
-
-  // Sample Data for FAQs
-  const faqs: FAQItem[] = [
-    {
-      question: 'What is Web3?',
-      answer:
-        'Web3 is the next generation of the internet, leveraging blockchain technology to create decentralized applications (dApps) that empower users with greater control over their data and digital assets.',
-    },
-    {
-      question: 'How can I get started with Web3?',
-      answer:
-        'Start by learning the basics of blockchain technology, create a cryptocurrency wallet, and engage with dApps to understand how decentralized systems operate.',
-    },
-    {
-      question: 'What are the benefits of using CommunityWallet?',
-      answer:
-        'CommunityWallet offers seamless wallet integration, access to educational resources, and tools to manage your digital assets efficiently and securely.',
-    },
-    // Add more FAQs as needed
   ];
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-500 to-teal-400 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Unlock the World of Web3</h1>
-          <p className="text-lg md:text-xl mb-8">
-            Dive into interactive tutorials, insightful videos, and engaging infographics to master blockchain technology.
-          </p>
-          <Link
-            href="#education"
-            className="bg-white text-blue-500 px-6 py-3 rounded-md font-semibold hover:bg-gray-100 transition duration-200"
-          >
-            Get Started
+    <section className="py-16 bg-gray-100">
+      <div className="container mx-auto px-4">
+        <h1 className="text-4xl font-semibold text-center mb-8">Explore Our Courses</h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {courseCategories.map((course, index) => (
+            <div key={index} className={`shadow-md p-6 rounded-lg ${course.color}`}>
+              <h2 className="text-2xl font-semibold mb-4">{course.title}</h2>
+              <p className="text-gray-600 mb-4">{course.description}</p>
+
+              <div className="space-y-4">
+                {course.levels.map((level, levelIndex) => (
+                  <div key={levelIndex} className="border-t pt-4">
+                    <h3 className="text-lg font-semibold">{level.name}</h3>
+                    <p className="text-sm text-gray-500">Who can watch: {level.whoCanWatch}</p>
+                    <p className="text-sm text-gray-500">Cost: {level.cost}</p>
+                    <p className="text-sm text-gray-500">Content: {level.content}</p>
+
+                    {level.isFree ? (
+                      <Link href={level.link} className="mt-2 inline-block bg-blue-500 text-white text-center py-1 px-3 rounded-md hover:bg-blue-600 transition duration-200">
+                        Enroll Now
+                      </Link>
+                    ) : (
+                      <EnrollButton paymentAmount={level.paymentAmount} recipient={recipientAddress} />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Become an Educator Section */}
+        <div className="text-center mt-12">
+          <h2 className="text-3xl font-semibold mb-4">Become an Educator</h2>
+          <p className="text-gray-600 mb-4">Join our platform and share your knowledge with the community.</p>
+          <Link href="/become-educator" className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-200">
+            Become an Educator
           </Link>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+};
 
-      {/* Interactive Tutorials Section */}
-      <section id="education" className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-semibold text-center mb-8">Interactive Tutorials</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {tutorials.map((tutorial, index) => (
-              <div
-                key={index}
-                className="bg-blue-50 p-6 rounded-md shadow-md hover:bg-blue-100 transition duration-200"
-              >
-                <div className="flex items-center justify-center mb-4">
-                  <FaBook className="text-blue-500 text-3xl" />
-                </div>
-                <Image
-                  src={tutorial.image}
-                  alt={tutorial.title}
-                  width={400}
-                  height={200}
-                  className="rounded-md mb-4 object-cover"
-                />
-                <h3 className="text-xl font-semibold mb-2">{tutorial.title}</h3>
-                <p className="text-gray-600">{tutorial.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+// EnrollButton Component
+interface EnrollButtonProps {
+  paymentAmount: string; // ETH amount as a string
+  recipient: string;
+}
 
-      {/* Video Content Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-semibold text-center mb-8">Video Content</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {videos.map((video, index) => (
-              <div
-                key={index}
-                className="bg-green-50 p-6 rounded-md shadow-md hover:shadow-lg transition duration-200"
-              >
-                <div className="flex items-center justify-center mb-4">
-                  <FaVideo className="text-green-500 text-3xl" />
-                </div>
-                <Image
-                  src={video.thumbnail}
-                  alt={video.title}
-                  width={400}
-                  height={200}
-                  className="rounded-md mb-4 object-cover"
-                />
-                <h3 className="text-xl font-semibold mb-2">{video.title}</h3>
-                <p className="text-gray-600 mb-4">{video.description}</p>
-                <div className="aspect-w-16 aspect-h-9">
-                  <iframe
-                    src={video.videoUrl}
-                    title={video.title}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="rounded-md w-full h-full"
-                  ></iframe>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+const EnrollButton: React.FC<EnrollButtonProps> = ({ paymentAmount, recipient }) => {
+  // Conditionally process only if the paymentAmount is valid (non-free)
+  if (paymentAmount === 'Free') {
+    return <p className="text-green-500 mt-1">This course is free!</p>;
+  }
 
-      {/* Infographics Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-semibold text-center mb-8">Infographics</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {infographics.map((infographic, index) => (
-              <div
-                key={index}
-                className="bg-yellow-50 p-6 rounded-md shadow-md hover:bg-yellow-100 transition duration-200"
-              >
-                <div className="flex items-center justify-center mb-4">
-                  <FaChartBar className="text-yellow-500 text-3xl" />
-                </div>
-                <Image
-                  src={infographic.image}
-                  alt={infographic.title}
-                  width={400}
-                  height={200}
-                  className="rounded-md mb-4 object-cover"
-                />
-                <h3 className="text-xl font-semibold mb-2">{infographic.title}</h3>
-                <p className="text-gray-600">{infographic.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+  const { sendTransaction, isLoading, isSuccess, error } = useSendTransaction({
+    request: {
+      to: recipient,
+      value: parseEther(paymentAmount), // Only works for valid numeric ETH amounts
+    },
+  });
 
-      {/* FAQ Section (Extra) */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-semibold text-center mb-8">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <div key={index} className="border-b border-gray-300 pb-4">
-                <button
-                  className="w-full text-left flex justify-between items-center focus:outline-none"
-                  onClick={() => toggleFAQ(index)}
-                  aria-expanded={activeFAQ === index}
-                  aria-controls={`faq-answer-${index}`}
-                >
-                  <span className="text-lg font-medium">{faq.question}</span>
-                  <span className="text-xl">
-                    {activeFAQ === index ? <FaMinus /> : <FaPlus />}
-                  </span>
-                </button>
-                {activeFAQ === index && (
-                  <p id={`faq-answer-${index}`} className="mt-2 text-gray-600">
-                    {faq.answer}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Call-to-Action Section */}
-      <section className="bg-gray-200 py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-2xl font-semibold mb-4">Stay Updated with the Latest in Web3</h3>
-          <p className="text-gray-700 mb-6">
-            Subscribe to our newsletter to receive the latest tutorials, videos, and insights directly to your inbox.
-          </p>
-          <form className="flex flex-col sm:flex-row justify-center items-center">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md mb-4 sm:mb-0 sm:mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            <button
-              type="submit"
-              className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-200"
-            >
-              Subscribe
-            </button>
-          </form>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-800 text-gray-200 py-6">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-sm">&copy; {new Date().getFullYear()} CommunityWallet. All rights reserved.</p>
-        </div>
-      </footer>
+  return (
+    <div className="mt-2">
+      <button
+        onClick={() => sendTransaction?.()}
+        disabled={isLoading}
+        className="bg-purple-500 text-white py-1 px-3 rounded-md hover:bg-purple-600 transition duration-200"
+      >
+        {isLoading ? 'Processing...' : `Enroll Now (${paymentAmount} ETH)`}
+      </button>
+      {isSuccess && <p className="text-green-500 mt-1">Payment Successful!</p>}
+      {error && <p className="text-red-500 mt-1">Error: {error.message}</p>}
     </div>
   );
 };
 
-export default LearnPage;
+export default Courses;
+
+
 
 
 

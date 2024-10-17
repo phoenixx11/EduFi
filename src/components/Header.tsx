@@ -7,23 +7,23 @@ const Header: React.FC = () => {
   return (
     <header className="bg-blue-600 text-white py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center px-4">
-        <Link href="/" className="text-xl font-bold">
+        <Link href="/" className="text-xl font-bold text-white" style={{ textShadow: 'none' }}>
           CommunityWallet
         </Link>
         <nav>
           <ul className="flex space-x-4">
             <li>
-              <Link href="/learn" className="hover:underline">
+              <Link href="/learn" className="hover:underline ont-bold text-white" style={{ textShadow: 'none' }}>
                 Learn
               </Link>
             </li>
             <li>
-              <Link href="/register" className="hover:underline">
+              <Link href="/register" className="hover:underline ont-bold text-white" style={{ textShadow: 'none' }}>
                 Register
               </Link>
             </li>
             <li>
-              <Link href="/login" className="hover:underline">
+              <Link href="/login" className="hover:underline ont-bold text-white" style={{ textShadow: 'none' }}>
                 Login
               </Link>
             </li>
