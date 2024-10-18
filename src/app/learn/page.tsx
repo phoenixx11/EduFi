@@ -6,7 +6,7 @@ import { useSendTransaction } from 'wagmi';
 import { parseEther } from 'ethers'; 
 
 const Courses: React.FC = () => {
-  const recipientAddress = '0xYourRecipientAddressHere'; // Replace with your wallet address
+  const recipientAddress = '0x7F513028Fc64a758CD96216d320b3dAa50791361'; // Replace with your wallet address
 
   const courseCategories = [
     {
@@ -27,16 +27,16 @@ const Courses: React.FC = () => {
           whoCanWatch: 'Basic understanding',
           cost: 'Free',
           content: 'Smart contracts, decentralized applications (DApps).',
-          isFree: false,
-          paymentAmount: 'Free', 
+          isFree: true,
+          link: '/courses/blockchain-basics/intermediate', 
         },
         {
           name: 'Advanced',
           whoCanWatch: 'Experienced',
           cost: 'Free',
           content: 'Advanced DeFi protocols and blockchain development.',
-          isFree: false,
-          paymentAmount: 'Free', 
+          isFree: true,
+          link: '/courses/blockchain-basics/advanced', 
         },
       ],
     },
@@ -59,7 +59,7 @@ const Courses: React.FC = () => {
           cost: '0.001Eth',
           content: 'Understanding liquidity pools, staking, and yield farming.',
           isFree: false,
-          paymentAmount: '0.001', // ETH equivalent for $15
+          paymentAmount: '0.001', 
         },
         {
           name: 'Advanced',
@@ -67,7 +67,7 @@ const Courses: React.FC = () => {
           cost: '0.001Eth',
           content: 'Advanced DeFi strategies and protocol interactions.',
           isFree: false,
-          paymentAmount: '0.001', // ETH equivalent for $30
+          paymentAmount: '0.001',
         },
       ],
     },
@@ -79,26 +79,26 @@ const Courses: React.FC = () => {
         {
           name: 'Beginner',
           whoCanWatch: 'Coding beginners',
-          cost: '-',
+          cost: 'NA',
           content: 'Basic Solidity and Ethereum concepts.',
           isFree: true,
-          link: '/courses/smart-contracts/beginner',
+          link: '/courses/blockchain-basics/advanced', 
         },
         {
           name: 'Intermediate',
           whoCanWatch: 'Some coding experience',
-          cost: '-',
+          cost: 'NA',
           content: 'Smart contract architecture and development with Github.',
-          isFree: false,
-          paymentAmount: 'coming soon', // ETH equivalent for $20
+          isFree: true,
+          link: '/courses/blockchain-basics/advanced', 
         },
         {
           name: 'Advanced',
           whoCanWatch: 'Experienced developers',
-          cost: '-',
+          cost: 'NA',
           content: 'Advanced smart contract security and best practices.',
-          isFree: false,
-          paymentAmount: 'coming soon', // ETH equivalent for $40
+          isFree: true,
+          link: '/courses/blockchain-basics/advanced', 
         },
       ],
     },
@@ -141,7 +141,7 @@ const Courses: React.FC = () => {
         <div className="text-center mt-12">
           <h2 className="text-3xl font-semibold mb-4">Become an Educator</h2>
           <p className="text-gray-600 mb-4">Join our platform and share your knowledge with the community.</p>
-          <Link href="/become-educator" className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-200">
+          <Link href="/educator" className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition duration-200">
             Become an Educator
           </Link>
         </div>
@@ -162,6 +162,7 @@ const EnrollButton: React.FC<EnrollButtonProps> = ({ paymentAmount, recipient })
     return <p className="text-green-500 mt-1">This course is free!</p>;
   }
 
+  // Ensure the payment amount is valid before attempting the transaction
   const { sendTransaction, isLoading, isSuccess, error } = useSendTransaction({
     request: {
       to: recipient,
@@ -171,13 +172,13 @@ const EnrollButton: React.FC<EnrollButtonProps> = ({ paymentAmount, recipient })
 
   return (
     <div className="mt-2">
-      <button
+      <div
         onClick={() => sendTransaction?.()}
         disabled={isLoading}
         className="bg-purple-500 text-white py-1 px-3 rounded-md hover:bg-purple-600 transition duration-200"
       >
         {isLoading ? 'Processing...' : `Enroll Now (${paymentAmount} ETH)`}
-      </button>
+      </div>
       {isSuccess && <p className="text-green-500 mt-1">Payment Successful!</p>}
       {error && <p className="text-red-500 mt-1">Error: {error.message}</p>}
     </div>
@@ -185,8 +186,4 @@ const EnrollButton: React.FC<EnrollButtonProps> = ({ paymentAmount, recipient })
 };
 
 export default Courses;
-
-
-
-
 

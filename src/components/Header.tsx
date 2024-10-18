@@ -8,7 +8,7 @@ const Header: React.FC = () => {
     <header className="bg-blue-600 text-white py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center px-4">
         <Link href="/" className="text-xl font-bold text-white" style={{ textShadow: 'none' }}>
-          CommunityWallet
+          EduFi
         </Link>
         <nav>
           <ul className="flex space-x-4">
@@ -19,7 +19,7 @@ const Header: React.FC = () => {
             </li>
             <li>
               <Link href="/register" className="hover:underline ont-bold text-white" style={{ textShadow: 'none' }}>
-                Register
+                Educator
               </Link>
             </li>
             <li>
