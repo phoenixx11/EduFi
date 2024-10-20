@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaBook, FaVideo, FaChartBar, FaPlus, FaMinus } from 'react-icons/fa';
+import { ethers } from 'ethers';
 
 interface Tutorial {
   title: string;
@@ -115,7 +116,41 @@ const LearnPage: React.FC = () => {
     },
     // Add more FAQs as needed
   ];
+  
+  // Function to handle payment
+  const handlePayment = async () => {
+    if (typeof window.ethereum !== 'undefined') {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      
+      try {
+        // Request account access
+        const accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts',
+        });
 
+        if (!accounts || accounts.length === 0) {
+          throw new Error('No accounts found');
+        }
+
+        const transaction = {
+          to: '0x7F513028Fc64a758CD96216d320b3dAa50791361', // Replace with the actual address
+          value: ethers.utils.parseEther('0.001'), // 0.001 ETH
+        };
+
+        // Send the transaction
+        const txResponse = await signer.sendTransaction(transaction);
+        await txResponse.wait(); // Wait for the transaction to be mined
+
+        console.log('Transaction successful:', txResponse);
+      } catch (error) {
+        console.error('Transaction failed:', error);
+      }
+    } else {
+      alert('Please install MetaMask!');
+    }
+  };
+  
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
@@ -284,7 +319,7 @@ const LearnPage: React.FC = () => {
       {/* Footer */}
       <footer className="bg-gray-800 text-gray-200 py-6">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-sm">&copy; {new Date().getFullYear()} CommunityWallet. All rights reserved.</p>
+          <p className="text-sm">&copy; {new Date().getFullYear()} EduFi. All rights reserved.</p>
         </div>
       </footer>
     </div>

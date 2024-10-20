@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { useSendTransaction } from 'wagmi';
-import { parseEther } from 'ethers'; 
+import { ethers } from 'ethers';
 
 const Courses: React.FC = () => {
-  const recipientAddress = '0x7F513028Fc64a758CD96216d320b3dAa50791361'; // Replace with your wallet address
+  const recipientAddress = '0xF53d9cd438D245bd7BFf62EA2C2d1FE7Fa413c99'; // Replace with your wallet address
 
   const courseCategories = [
     {
@@ -28,7 +27,7 @@ const Courses: React.FC = () => {
           cost: 'Free',
           content: 'Smart contracts, decentralized applications (DApps).',
           isFree: true,
-          link: '/courses/blockchain-basics/intermediate', 
+          link: '/courses/blockchain-basics/intermediate',
         },
         {
           name: 'Advanced',
@@ -36,7 +35,7 @@ const Courses: React.FC = () => {
           cost: 'Free',
           content: 'Advanced DeFi protocols and blockchain development.',
           isFree: true,
-          link: '/courses/blockchain-basics/advanced', 
+          link: '/courses/blockchain-basics/advanced',
         },
       ],
     },
@@ -59,7 +58,7 @@ const Courses: React.FC = () => {
           cost: '0.001Eth',
           content: 'Understanding liquidity pools, staking, and yield farming.',
           isFree: false,
-          paymentAmount: '0.001', 
+          paymentAmount: '0.001',
         },
         {
           name: 'Advanced',
@@ -82,7 +81,7 @@ const Courses: React.FC = () => {
           cost: 'NA',
           content: 'Basic Solidity and Ethereum concepts.',
           isFree: true,
-          link: '/courses/blockchain-basics/advanced', 
+          link: '/courses/blockchain-basics/advanced',
         },
         {
           name: 'Intermediate',
@@ -90,7 +89,7 @@ const Courses: React.FC = () => {
           cost: 'NA',
           content: 'Smart contract architecture and development with Github.',
           isFree: true,
-          link: '/courses/blockchain-basics/advanced', 
+          link: '/courses/blockchain-basics/advanced',
         },
         {
           name: 'Advanced',
@@ -98,7 +97,7 @@ const Courses: React.FC = () => {
           cost: 'NA',
           content: 'Advanced smart contract security and best practices.',
           isFree: true,
-          link: '/courses/blockchain-basics/advanced', 
+          link: '/courses/blockchain-basics/advanced',
         },
       ],
     },
@@ -136,7 +135,7 @@ const Courses: React.FC = () => {
             </div>
           ))}
         </div>
-
+        
         {/* Become an Educator Section */}
         <div className="text-center mt-12">
           <h2 className="text-3xl font-semibold mb-4">Become an Educator</h2>
@@ -151,39 +150,59 @@ const Courses: React.FC = () => {
 };
 
 // EnrollButton Component
-interface EnrollButtonProps {
-  paymentAmount: string; // ETH amount as a string
-  recipient: string;
-}
-
 const EnrollButton: React.FC<EnrollButtonProps> = ({ paymentAmount, recipient }) => {
-  // Conditionally process only if the paymentAmount is valid (non-free)
-  if (paymentAmount === 'Free') {
-    return <p className="text-green-500 mt-1">This course is free!</p>;
-  }
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Ensure the payment amount is valid before attempting the transaction
-  const { sendTransaction, isLoading, isSuccess, error } = useSendTransaction({
-    request: {
-      to: recipient,
-      value: parseEther(paymentAmount), // Only works for valid numeric ETH amounts
-    },
-  });
+const handlePayment = async () => {
+  if (typeof window.ethereum !== 'undefined') {
+    try {
+      setIsLoading(true);
+
+      // Request user to connect MetaMask if not already connected
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+
+      const transactionParameters = {
+        to: recipient, // The recipient's address
+        value: ethers.parseUnits(paymentAmount), // Convert paymentAmount (ETH) to Wei
+      };
+
+      // Trigger the payment transaction through MetaMask
+      const tx = await signer.sendTransaction(transactionParameters);
+
+      await tx.wait(); // Wait for the transaction to be mined
+
+      setIsSuccess(true);
+      setError(null);
+    } catch (err) {
+      setError('Payment failed: ' + (err as Error).message);
+    } finally {
+      setIsLoading(false);
+    }
+  } else {
+    setError('MetaMask is not installed.');
+  }
+};
+
 
   return (
     <div className="mt-2">
-      <div
-        onClick={() => sendTransaction?.()}
+      <button
+        onClick={handlePayment}
         disabled={isLoading}
         className="bg-purple-500 text-white py-1 px-3 rounded-md hover:bg-purple-600 transition duration-200"
       >
         {isLoading ? 'Processing...' : `Enroll Now (${paymentAmount} ETH)`}
-      </div>
+      </button>
       {isSuccess && <p className="text-green-500 mt-1">Payment Successful!</p>}
-      {error && <p className="text-red-500 mt-1">Error: {error.message}</p>}
+      {error && <p className="text-red-500 mt-1">{error}</p>}
     </div>
   );
 };
 
-export default Courses;
 
+export default Courses;

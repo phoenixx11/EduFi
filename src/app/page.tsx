@@ -7,7 +7,7 @@ import Testimonials from '../components/Testimonials';
 //import WalletConnectButton from '../components/WalletConnectButton';
 import { useAccount } from 'wagmi';
 import  WalletWrapper  from '../components/WalletWrapper'; 
-
+import IdentityPrompt from '../components/IdentityPrompt'; 
 const LandingPage: React.FC = () => {
   const { isConnected } = useAccount();
 
@@ -34,6 +34,9 @@ const LandingPage: React.FC = () => {
 
       {/* Educational Component */}
       <EducationComponent />
+       
+      {/* Identity Prompt - Encourage users to create on-chain identity */}
+      <IdentityPrompt />
 
       {/* Wallet Connection Section */}
       <div className="container mx-auto px-4 py-12">

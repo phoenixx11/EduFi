@@ -24,7 +24,7 @@
     "react-toastify": "^10.0.6",
     "siwe": "^2.3.2",
     "viem": "latest",
-    "wagmi": "^2.12.18"
+    "wagmi": "^2.12.20"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.0",
