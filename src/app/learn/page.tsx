@@ -123,7 +123,7 @@ const Courses: React.FC = () => {
                     <p className="text-sm text-gray-500">Content: {level.content}</p>
 
                     {level.isFree ? (
-                      <Link href={level.link} className="mt-2 inline-block bg-blue-500 text-white text-center py-1 px-3 rounded-md hover:bg-blue-600 transition duration-200">
+                      <Link href= "/beginner" className="mt-2 inline-block bg-blue-500 text-white text-center py-1 px-3 rounded-md hover:bg-blue-600 transition duration-200">
                         Enroll Now
                       </Link>
                     ) : (

@@ -16,7 +16,7 @@ const IdentityPrompt: React.FC = () => {
           <div className="flex justify-between items-center">
             <div className="text-center">
               <h3 className="text-xl font-bold">Create Your On-Chain Identity</h3>
-              <p className="text-sm mb-4">Secure your username and identity on the blockchain!</p>
+              <p className="text-sm mb-4">Secure your identity on the blockchain using BASE!</p>
               
             </div>
             <button

@@ -8,9 +8,9 @@ const AboutPage: React.FC = () => {
     <section className="py-16 bg-white text-gray-800">
       <div className="container mx-auto px-4">
         {/* Welcome Section */}
-        <h1 className="text-4xl font-bold text-center mb-8">Welcome to LearnDeFi</h1>
+        <h1 className="text-4xl font-bold text-center mb-8">Welcome to EduFi</h1>
         <p className="text-center text-lg mb-12 max-w-3xl mx-auto">
-          At LearnDeFi, we are on a mission to make blockchain and decentralized finance accessible to everyone. Whether you're completely new to the space or already have some knowledge, we offer structured learning paths to guide you from beginner to expert.
+          At EduFi, we are on a mission to make blockchain and decentralized finance accessible to everyone. Whether you're completely new to the space or already have some knowledge, we offer structured learning paths to guide you from beginner to expert.
         </p>
 
         {/* Two Paths Section */}
@@ -30,7 +30,7 @@ const AboutPage: React.FC = () => {
             <div className="flex-1 bg-blue-50 p-6 rounded-md shadow-md">
               <FaGraduationCap className="text-4xl mb-4 text-blue-500" />
               <h3 className="text-xl font-semibold mb-2">Seedling Stage</h3>
-              <p>Perfect for beginners with no prior knowledge of blockchain. Start from the basics and build a strong foundation.</p>
+              <p>Perfect for beginners with no prior knowledge of blockchain. Start from the basics till you start making transactions onchain.</p>
             </div>
 
             {/* Explorer Stage */}
@@ -44,7 +44,7 @@ const AboutPage: React.FC = () => {
             <div className="flex-1 bg-yellow-50 p-6 rounded-md shadow-md">
               <FaGlobe className="text-4xl mb-4 text-yellow-500" />
               <h3 className="text-xl font-semibold mb-2">Pioneer Stage</h3>
-              <p>Advanced courses for those ready to apply their skills and become leaders in the blockchain space.</p>
+              <p>Advanced courses for those ready to apply their skills and become devs/leaders in the blockchain space.</p>
             </div>
           </div>
         </div>
