@@ -1,5 +1,30 @@
 # EduFi
 Proof of transaction(Base Sepolia)-  0x0b1db56879fbe94e32736c64fdae5b6405331913a89aa948a59ee609c0f07ade
+Contract (VideoNFT-ProofOfTime) deployed to: 0xc43454E7B30f1Be7962DbA89d93F7bc97e26cb5B
+
+---
+The NFTS that the educators earn on uploading a video of certain length gets a tradable NFT as option.
+Options Functionality
+
+The ProofOfTimeNFT contract enables NFT owners to create and manage options linked to their NFTs. This feature allows for trading financial instruments associated with NFTs.
+Key Features
+Option Struct: Represents an option with the following attributes:
+seller: Address of the option seller.
+nftId: ID of the associated NFT.
+strikePrice: Price (in wei) to exercise the option.
+expiration: Timestamp of when the option expires.
+isCallOption: Indicates if the option is a call (true) or put (false).
+
+Creating Options:
+The createOption function allows NFT owners to create options, ensuring they own the NFT and the expiration is in the future.
+Exercising Options:
+The exerciseOption function allows users to exercise options:
+Call Option: Buyer pays the strikePrice and receives the NFT.
+Put Option: NFT owner sells the NFT back for the strikePrice.
+
+Events
+OptionCreated: Emitted when an option is created.
+OptionExercised: Emitted when an option is exercised.
 
 EduFi is a blockchain-powered educational platform designed to spread awareness and provide practical experience with blockchain and decentralized finance (DeFi). The platform offers courses for learners, allowing them to mint tradable NFTs(Proof of Time) upon course completion, and enables educators to contribute content and mint NFTs as options, 
 
