@@ -1,14 +1,21 @@
 {
   "name": "hardhat-project",
   "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@openzeppelin/contracts": "^5.1.0",
+    "@types/node": "^22.7.7",
     "ethers": "^5.7.2",
     "hardhat": "^2.22.13",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   },
   "dependencies": {
-    "ether": "^0.0.9"
+    "dotenv": "^10.0.0"
+  },
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.ts --network baseSepolia"
   }
 }

@@ -4,13 +4,13 @@ pragma solidity ^0.8.24;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-abstract contract ProofOfLearningNFT is ERC721, Ownable {
+contract ProofOfTimeNFT is ERC721, Ownable {
     struct Video {
         string url;
         uint256 length; // in seconds
         bool uploaded;
     }
-    
+
     struct Option {
         address seller;
         uint256 nftId;
@@ -18,7 +18,7 @@ abstract contract ProofOfLearningNFT is ERC721, Ownable {
         uint256 expiration; // timestamp of expiration
         bool isCallOption; // true = call, false = put
     }
-    
+
     uint256 private _tokenIdCounter;
     mapping(uint256 => Video) public videos; // tokenId -> Video details
     mapping(uint256 => Option) public options; // optionId -> Option details
@@ -28,7 +28,11 @@ abstract contract ProofOfLearningNFT is ERC721, Ownable {
     event OptionCreated(uint256 optionId, uint256 nftId, uint256 strikePrice, uint256 expiration, bool isCallOption);
     event OptionExercised(uint256 optionId, address buyer);
 
-    constructor() ERC721("Proof of Time", "POT") {}
+    // Constructor with customizable name and symbol
+    constructor(string memory name, string memory symbol) 
+        ERC721(name, symbol) 
+        Ownable(msg.sender) // Correctly initialize Ownable
+    {}
 
     function uploadAndMintNFT(string memory videoUrl, uint256 videoLength) external {
         require(videoLength >= 120, "Video must be at least 2 minutes long");

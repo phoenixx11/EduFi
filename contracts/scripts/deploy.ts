@@ -1,28 +1,27 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const VideoNFT = await ethers.getContractFactory("ProofOfLearningNFT");
+    // Get the deployer account
+    const [deployer] = await ethers.getSigners();
 
-  const videoNFT = await VideoNFT.deploy();
+    console.log("Deploying contracts with the account:", deployer.address);
 
-  
-  // Wait for the contract to be deployed
-  await videoNFT.deployed();
+    // Get the contract factory for ProofOfTimeNFT
+    const ProofOfTimeNFT = await ethers.getContractFactory("ProofOfTimeNFT");
 
-  console.log("Deploying contracts with the account:", VideoNFT.address);
+    // Deploy the contract with customizable name and symbol
+    const contract = await ProofOfTimeNFT.deploy("ProofOfTimeNFT", "POT");
 
+    // Wait for the deployment to complete
+    await contract.deployed();
+
+    console.log("Contract deployed to:", contract.address);
 }
 
-// Execute the main function and handle errors
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
-
-
-
-
-//https://base-sepolia.g.alchemy.com/v2/kksljUTHDAvLBoe/${process.env.ALCHEMY_API_KEY}'
-
-
-
+// Execute the deployment script
+main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });

@@ -18,6 +18,9 @@ const EducatorDashboard: React.FC = () => {
   const [dragging, setDragging] = useState<boolean>(false);
   const [videoLength, setVideoLength] = useState<number>(0);
   const [isMinting, setIsMinting] = useState(false);
+  const [strikePrice, setStrikePrice] = useState<number>(0);
+  const [expirationTimestamp, setExpirationTimestamp] = useState<number>(0);
+  const [isCreatingOption, setIsCreatingOption] = useState(false);
 
   // Load video data (in production, you'd fetch from a backend)
   useEffect(() => {
@@ -56,6 +59,51 @@ const EducatorDashboard: React.FC = () => {
       toast.error('An error occurred while minting the NFT.');
     } finally {
       setIsMinting(false);
+    }
+  };
+
+  // Function to create an option for the NFT
+  const createOption = async () => {
+    if (!videoURI) {
+      toast.error('You need to mint an NFT before creating an option.');
+      return;
+    }
+
+    if (strikePrice <= 0) {
+      toast.error('Strike price must be greater than zero.');
+      return;
+    }
+
+    if (expirationTimestamp <= Date.now() / 1000) { // Check if expiration is in the future
+      toast.error('Expiration date must be in the future.');
+      return;
+    }
+
+    setIsCreatingOption(true);
+
+    try {
+      const response = await fetch('/api/create-option', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nftId: videos[0].id, // Assuming you are creating an option for the first video
+          strikePrice,
+          expiration: expirationTimestamp,
+          isCallOption: true, // Change this based on user selection
+        }),
+      });
+
+      if (response.ok) {
+        toast.success('Option created successfully!');
+      } else {
+        toast.error('Failed to create option.');
+      }
+    } catch (error) {
+      toast.error('An error occurred while creating the option.');
+    } finally {
+      setIsCreatingOption(false);
     }
   };
 
@@ -130,6 +178,43 @@ const EducatorDashboard: React.FC = () => {
             }`}
           >
             {isMinting ? 'Minting...' : 'Mint Future NFT'}
+          </button>
+        </div>
+
+        {/* Create Option Section */}
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-6">
+          <h2 className="text-2xl font-semibold mb-4">Create Option</h2>
+          
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="strikePrice">
+            Strike Price (in wei):
+            <input
+              type="number"
+              id="strikePrice"
+              value={strikePrice}
+              onChange={(e) => setStrikePrice(Number(e.target.value))}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              placeholder="Enter strike price"
+            />
+          </label>
+
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="expiration">
+            Expiration Timestamp:
+            <input
+              type="datetime-local"
+              id="expiration"
+              onChange={(e) => setExpirationTimestamp(new Date(e.target.value).getTime() / 1000)} // Convert to seconds since epoch
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </label>
+
+          <button
+            onClick={createOption}
+            disabled={isCreatingOption}
+            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
+              isCreatingOption ? 'cursor-not-allowed' : ''
+            }`}
+          >
+            {isCreatingOption ? 'Creating Option...' : 'Create Option'}
           </button>
         </div>
       </div>
